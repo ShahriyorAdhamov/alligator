@@ -55,6 +55,7 @@ function calculateAlligator(values) {
 }
 
 // ===== Проверка сигнала =====
+// ===== Проверка сигнала =====
 async function checkSymbol(symbol) {
   const data = await getCandles(symbol);
   if (!data) return;
@@ -67,9 +68,9 @@ async function checkSymbol(symbol) {
   const vTeeth = teeth.at(-1);
   const vLips = lips.at(-1);
 
-  let signal = null; // ❌ Нет сигнала → null
+  let signal = null; // Если пересечения нет — null
 
-  // Проверяем последние 3 свечи
+  // Проверяем последние 3 свечи на пересечение цены с Teeth
   for (let i = 0; i < 3; i++) {
     const idx = data.length - 1 - i;
     const t = teeth.length - 1 - i;
@@ -81,14 +82,20 @@ async function checkSymbol(symbol) {
     const prevTeeth = teeth[t - 1];
     const curTeeth = teeth[t];
 
-    // LONG сигнал: пробой Teeth ценой
-    if (prevClose <= prevTeeth && curClose > curTeeth) {
-      signal = `✅ LONG (пробой Teeth ценой ${i === 0 ? "СЕЙЧАС" : `${i} свечей назад`})`;
-      break; // выходим после первого найденного сигнала
+    // Пересечение снизу вверх → LONG
+    if (prevClose < prevTeeth && curClose > curTeeth) {
+      signal = `✅ LONG (пересечение Teeth ценой ${i === 0 ? "СЕЙЧАС" : `${i} свечей назад`})`;
+      break;
+    }
+
+    // Пересечение сверху вниз → SHORT
+    if (prevClose > prevTeeth && curClose < curTeeth) {
+      signal = `❌ SHORT (пересечение Teeth ценой ${i === 0 ? "СЕЙЧАС" : `${i} свечей назад`})`;
+      break;
     }
   }
 
-  // ✅ Отправляем сообщение только если есть сигнал
+  // Отправляем сообщение только если есть сигнал
   if (signal) {
     const msg =
 `**#${symbol} (1D)**
@@ -103,6 +110,7 @@ async function checkSymbol(symbol) {
     await bot.telegram.sendMessage(CHAT_ID, msg, { parse_mode: "Markdown" });
   }
 }
+
 
 // ===== Сканирование =====
 async function scanMarket(ctx = null) {
