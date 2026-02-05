@@ -67,8 +67,9 @@ async function checkSymbol(symbol) {
   const vTeeth = teeth.at(-1);
   const vLips = lips.at(-1);
 
-  let signal = "❌ Нет сигнала";
+  let signal = null; // ❌ Нет сигнала → null
 
+  // Проверяем последние 3 свечи
   for (let i = 0; i < 3; i++) {
     const idx = data.length - 1 - i;
     const t = teeth.length - 1 - i;
@@ -80,13 +81,16 @@ async function checkSymbol(symbol) {
     const prevTeeth = teeth[t - 1];
     const curTeeth = teeth[t];
 
+    // LONG сигнал: пробой Teeth ценой
     if (prevClose <= prevTeeth && curClose > curTeeth) {
       signal = `✅ LONG (пробой Teeth ценой ${i === 0 ? "СЕЙЧАС" : `${i} свечей назад`})`;
-      break;
+      break; // выходим после первого найденного сигнала
     }
   }
 
-  const msg =
+  // ✅ Отправляем сообщение только если есть сигнал
+  if (signal) {
+    const msg =
 `**#${symbol} (1D)**
 Цена: ${price.toFixed(2)}
 
@@ -96,7 +100,8 @@ async function checkSymbol(symbol) {
 
 Результат: ${signal}`;
 
-  await bot.telegram.sendMessage(CHAT_ID, msg, { parse_mode: "Markdown" });
+    await bot.telegram.sendMessage(CHAT_ID, msg, { parse_mode: "Markdown" });
+  }
 }
 
 // ===== Сканирование =====
