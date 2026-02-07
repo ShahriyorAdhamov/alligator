@@ -10,8 +10,13 @@ const CHAT_ID = process.env.CHAT_ID;
 const bot = new Telegraf(BOT_TOKEN);
 
 const SYMBOLS = [
-  "AAPL","MSFT","NVDA","GOOGL","AMZN",
-  "META","TSLA","GIII","SMCI","AMD","NFLX"
+  "GNK", "GMED", "CF", "DVN", "HBB","INCY",
+  "SPT", "SCLX", "TGTX", "RIOT", "ANF", "PHR", "DECK", "NUE", "LQDT",
+  "AZN", "PATH", "CDNA", "RHI", "MCHP", "ADBE", "ARLO",
+  "AAPL", "AEHR", "NVDA", "GOOGL", "AMZN",
+  "META", "TSLA", "FIZZ", "SMCI", "AMD", "TNDM",
+  "TMDX", "ABT", "BRZE", "RELY", "CALX", "ATRC", "RMD",
+  "ORLY", "FTNT", "CRWV", "SPT", "LULU", "TTD", "SONO", "ELF"
 ];
 const TIMEFRAME = "1d";
 let isScanning = false;
@@ -98,7 +103,7 @@ async function checkSymbol(symbol) {
   // Отправляем сообщение только если есть сигнал
   if (signal) {
     const msg =
-`**#${symbol} (1D)**
+      `**#${symbol} (1D)**
 Цена: ${price.toFixed(2)}
 
 🟢 Lips: ${vLips.toFixed(2)}
@@ -151,19 +156,6 @@ bot.on("text", ctx => {
   }
 });
 
-// ===== Автосканирование каждый день в 20:00 Ташкент =====
-function scheduleTask() {
-  const now = new Date();
-  const target = new Date();
-  target.setUTCHours(15, 0, 0, 0); // 20:00 Ташкент = 15:00 UTC
-
-  if (target <= now) target.setUTCDate(target.getUTCDate() + 1);
-
-  setTimeout(() => {
-    scanMarket();
-    scheduleTask();
-  }, target - now);
-}
 
 // ===== Старт =====
 bot.launch().then(() => {
