@@ -3,21 +3,15 @@ import { WEMA } from "technicalindicators";
 import YahooFinance from "yahoo-finance2";
 import dotenv from "dotenv";
 
+import {SYMBOLS} from "./symbols";
+
 dotenv.config(); // Загружаем BOT_TOKEN и CHAT_ID из .env
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 const bot = new Telegraf(BOT_TOKEN);
 
-const SYMBOLS = [
-  "GNK", "GMED", "CF", "DVN", "HBB","INCY",
-  "SPT", "SCLX", "TGTX", "RIOT", "ANF", "PHR", "DECK", "NUE", "LQDT",
-  "AZN", "PATH", "CDNA", "RHI", "MCHP", "ADBE", "ARLO",
-  "AAPL", "AEHR", "NVDA", "GOOGL", "AMZN",
-  "META", "TSLA", "FIZZ", "SMCI", "AMD", "TNDM",
-  "TMDX", "ABT", "BRZE", "RELY", "CALX", "ATRC", "RMD",
-  "ORLY", "FTNT", "CRWV", "SPT", "LULU", "TTD", "SONO", "ELF"
-];
+
 const TIMEFRAME = "1d";
 let isScanning = false;
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
