@@ -3,7 +3,7 @@ import { WEMA } from "technicalindicators";
 import YahooFinance from "yahoo-finance2";
 import dotenv from "dotenv";
 
-import {SYMBOLS} from "./symbols";
+import {SYMBOLS} from "./symbols.js";
 
 dotenv.config(); // Загружаем BOT_TOKEN и CHAT_ID из .env
 
