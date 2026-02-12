@@ -16,20 +16,21 @@ const TIMEFRAME = "1d";
 let isScanning = false;
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
-const yahooFinance = new YahooFinance();
+const yahooFinance = new YahooFinance({
+  timeout: 15000,
+  suppressNotices: ['ripHistorical']
+});
+
 
 // ===== Получение свечей =====
 async function getCandles(symbol) {
   try {
-    const now = new Date();
-    const past = new Date();
-    past.setFullYear(now.getFullYear() - 1);
-
-    const candles = await yahooFinance.historical(symbol, {
-      period1: past,
-      period2: now,
+    const result = await yahooFinance.chart(symbol, {
+      range: "1y",        // 1 yil
       interval: TIMEFRAME
     });
+
+    const candles = result.quotes;
 
     if (!candles || candles.length < 50) return null;
 
@@ -38,8 +39,9 @@ async function getCandles(symbol) {
       close: c.close,
       date: c.date
     }));
+
   } catch (e) {
-    console.log(`Ошибка ${symbol}:`, e.message);
+    console.log(`Ошибка ${symbol}:`, e);
     return null;
   }
 }
