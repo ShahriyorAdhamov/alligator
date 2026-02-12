@@ -5,7 +5,7 @@ export const SYMBOLS = [
   "SPT", "SCLX", "TGTX", "RIOT", "ANF", "PHR", "DECK", "NUE", "LQDT",
   "AZN", "PATH", "CDNA", "RHI", "MCHP", "ADBE", "ARLO",
   "AAPL", "AEHR", "NVDA", "GOOGL", "AMZN", "CHRD", "TMDK",
-  "HAL", "HIMS", "ZATA", "GLE", "LOVE", "ORCL", "MYO",
+  "HAL", "HIMS", "ZETA", "GLE", "LOVE", "ORCL", "MYO",
   "META", "TSLA", "FIZZ", "SMCI", "AMD", "TNDM",
   "TMDX", "ABT", "BRZE", "RELY", "CALX", "ATRC", "RMD",
   "ORLY", "FTNT", "CRWV", "SPT", "LULU", "TTD", "SONO", "ELF"
